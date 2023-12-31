@@ -30,7 +30,11 @@ header {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
+
 
 .card {
   background-color: #fff;

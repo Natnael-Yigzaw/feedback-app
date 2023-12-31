@@ -15,9 +15,9 @@ const FeedbackList = () => {
     <>
       <div className="feedback-list">
         <AnimatePresence>
-          {feedback.map((item) => (
+          {feedback.map((item, index) => (
             <motion.div
-              key={item.id}
+              key={index}
               // whileHover={{ scale: 1.1 }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

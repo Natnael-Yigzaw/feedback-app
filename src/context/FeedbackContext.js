@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 const FeedbackContext = createContext();
 
@@ -15,17 +14,31 @@ export const FeedbackProvider = ({ children }) => {
     fetchFeedback();
   }, []);
 
-  // fetch data from json database
+  // fetch feedback from json database
   const fetchFeedback = async () => {
-    const response = await fetch("http://localhost:5000/feedback");
-    const data = await response.json();
-    setFeedback(data);
-    setIsLoading(false);
+    try {
+      const response = await fetch("http://localhost:5000/feedback");
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      setFeedback(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching feedback:", error);
+    }
   };
 
-  const addFeedback = (newFeedback) => {
-    newFeedback.id = uuidv4();
-    setFeedback([...feedback, newFeedback]);
+  const addFeedback = async (newFeedback) => {
+    const response = await fetch("http://localhost:5000/feedback", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newFeedback),
+    });
+    const data = await response.json();
+    setFeedback([...feedback, data]);
   };
 
   const deleteFeedback = (id) => {
